@@ -127,6 +127,11 @@ def _combinar_planilhas(arquivo_closed, arquivo_open, arquivo_destino):
             workbook_destino.close()
 
 
+def _remover_downloads_processados(arquivo_closed, arquivo_open):
+    arquivo_closed.unlink()
+    arquivo_open.unlink()
+
+
 def main():
     pasta_download = Path(carregar_json())
 
@@ -143,7 +148,9 @@ def main():
     )
 
     _combinar_planilhas(arquivo_closed, arquivo_open, ARQUIVO_DESTINO)
+    _remover_downloads_processados(arquivo_closed, arquivo_open)
     print(f"Planilhas combinadas em: {ARQUIVO_DESTINO}")
+    print("Downloads processados removidos.")
 
 
 if __name__ == "__main__":
