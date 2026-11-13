@@ -1,3 +1,4 @@
+from datetime import date
 from pathlib import Path
 
 from openpyxl import load_workbook
@@ -96,11 +97,18 @@ def _combinar_planilhas(arquivo_closed, arquivo_open, arquivo_destino):
                 linha_destino = linha + 1
                 break
 
+        data_extracao = date.today()
         for planilha_origem, mapeamento in (
             (planilha_closed, mapeamento_closed),
             (planilha_open, mapeamento_open),
         ):
             for linha in planilha_origem.iter_rows(min_row=2, values_only=True):
+                celula_data = planilha_destino.cell(
+                    row=linha_destino,
+                    column=1,
+                    value=data_extracao,
+                )
+                celula_data.number_format = "dd/mm/yyyy"
                 for coluna_origem, coluna_destino in mapeamento:
                     planilha_destino.cell(
                         row=linha_destino,
